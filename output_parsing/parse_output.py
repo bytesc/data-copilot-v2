@@ -14,3 +14,15 @@ def parse_output_img(txt):
         return None
 
     return matched_paths[0]
+
+
+def parse_generated_code(txt):
+    matches = []
+    try:
+        matches = re.findall(r'```python(.*?)```', txt, re.DOTALL)
+    except Exception as e:
+        print("parsing err", e)
+
+    if len(matches) == 0:
+        return None
+    return matches[0]

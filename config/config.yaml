@@ -2,9 +2,9 @@ mysql: mysql+pymysql://root:123456@127.0.0.1/data_copilot
 # classicmodels data_copilot
 
 ai:
-  tries: 3
-  retries: 2
-  concurrent: 3
+  tries: 1
+  retries: 1
+  concurrent: 1
   wait: 3
 
 llm:
