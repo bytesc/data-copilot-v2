@@ -7,11 +7,16 @@ from output_parsing import parse_output
 import time
 import logging
 
+import math
 import pandas as pd
+
 import matplotlib.pyplot as plt
 import matplotlib
 import PIL
-import math
+
+from pyecharts import options as opts
+from pyecharts.charts import *
+from pyecharts.globals import *
 
 
 def top_five_dfs(df_dict):

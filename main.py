@@ -1,4 +1,5 @@
 import base64
+import json
 
 import pygwalker as pyg
 import pandas as pd
@@ -6,13 +7,14 @@ import matplotlib.pyplot as plt
 
 from fastapi import FastAPI, HTTPException
 
-from ask_ai import ask_ai_for_pd, ask_ai_for_graph
+from ask_ai import ask_ai_for_pd, ask_ai_for_graph,ask_ai_for_echart
 import data_access.read_db
 
 from pydantic import BaseModel
 
 from config.get_config import config_data
 from manuel_mode import pandas_html
+from utils import path_tools
 
 import logging
 
@@ -38,6 +40,7 @@ logging.info("setting up")
 app = FastAPI()
 
 
+
 class AskRequest(BaseModel):
     question: str
     concurrent: int
@@ -55,7 +58,9 @@ async def ask_pd(request: AskRequest):
                 "retries_used": retries_used,
                 "msg": "gen failed"
             }
-        return {"code": 200, "answer": result.to_dict()}
+        return {"code": 200,
+                "retries_used": retries_used,
+                "answer": result.to_dict()}
     except Exception as e:
         raise HTTPException(status_code=508, detail=str(e))
 
@@ -72,7 +77,14 @@ async def ask_pd_walker(request: AskRequest):
                 "msg": "gen failed"
             }
         html = pandas_html.get_html(result)
-        return {"code": 200, "html": html}
+        file_path = path_tools.generate_html_path()
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(html)
+        with open(file_path, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+        return {"code": 200,
+                "retries_used": retries_used,
+                "html": html_content}
     except Exception as e:
         raise HTTPException(status_code=508, detail=str(e))
 
@@ -85,6 +97,7 @@ async def ask_graph(request: AskRequest):
         if result is None:
             return {
                 "code": 504,
+                "retries_used": retries_used,
                 "msg": "gen failed"
             }
         with open(result, "rb") as image_file:
@@ -97,6 +110,27 @@ async def ask_graph(request: AskRequest):
     except Exception as e:
         raise HTTPException(status_code=508, detail=str(e))
 
+
+@app.post("/ask-echart")
+async def ask_echart(request: AskRequest):
+    dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
+    try:
+        result, retries_used = ask_ai_for_echart.ask_echart(dict_data, request)
+        with open(result, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+        if result is None:
+            return {
+                "code": 504,
+                "retries_used": retries_used,
+                "msg": "gen failed"
+            }
+        return {
+            "code": 200,
+            "retries_used": retries_used,
+            "echart_html": html_content
+        }
+    except Exception as e:
+        raise HTTPException(status_code=508, detail=str(e))
 
 if __name__ == "__main__":
     logging.info("server starting")

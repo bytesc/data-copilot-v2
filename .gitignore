@@ -8,3 +8,4 @@ output_img/
 cache/
 exports/
 tmp_imgs/*.png
+tmp_imgs/*.html
