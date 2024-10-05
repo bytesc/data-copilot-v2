@@ -14,10 +14,9 @@ def ask_pd(data, req):
     the Python function should return a single pandas dataframe only!!! 
     here is an example: 
     ```python
-    import pandas as pd
-    import math
-
     def process_data(dataframes_dict):
+        import pandas as pd
+        import math
         # generate code to perform operations here
         return result
     ```

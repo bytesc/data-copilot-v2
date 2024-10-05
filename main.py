@@ -1,8 +1,5 @@
 import base64
-import json
 
-import pygwalker as pyg
-import pandas as pd
 import matplotlib.pyplot as plt
 
 from fastapi import FastAPI, HTTPException
@@ -12,8 +9,7 @@ import data_access.read_db
 
 from pydantic import BaseModel
 
-from config.get_config import config_data
-from manuel_mode import pandas_html
+from utils.manuel_mode import pandas_html
 from utils import path_tools
 
 import logging

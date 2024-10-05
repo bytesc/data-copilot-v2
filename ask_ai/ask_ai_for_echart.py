@@ -1,9 +1,7 @@
 import concurrent
 
-import pandas as pd
-
 from llm_access.LLM import llm
-from output_parsing import parse_output
+from utils.output_parsing import parse_output
 from ask_ai import input_process
 from config.get_config import config_data
 from ask_ai import ask_api
@@ -16,19 +14,18 @@ def ask_echart(data, req):
     graph_type = input_process.get_chart_type(question) + """
     use pyecharts. the Python function should return a string file path in ./tmp_imgs/ only 
     and the graph html generated should be stored in that path. 
-    file path:
+    file path must be:
     """
 
     example_code = """
     here is an: 
     ```python
-    import pandas as pd
-    import math
-    from pyecharts import options as opts
-    from pyecharts.charts import *
-    from pyecharts.globals import *
-
     def process_data(dataframes_dict):
+        import pandas as pd
+        import math
+        from pyecharts import options as opts
+        from pyecharts.charts import *
+        from pyecharts.globals import *
         # generate code to perform operations here
         return html_string
     ```

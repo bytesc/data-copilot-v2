@@ -1,22 +1,9 @@
-from config.get_config import config_data
-
 from llm_access import call_llm_test
 
-from output_parsing import parse_output
+from utils.output_parsing import parse_output
 
 import time
 import logging
-
-import math
-import pandas as pd
-
-import matplotlib.pyplot as plt
-import matplotlib
-import PIL
-
-from pyecharts import options as opts
-from pyecharts.charts import *
-from pyecharts.globals import *
 
 
 def top_five_dfs(df_dict):
@@ -40,7 +27,7 @@ def ask(data, question, llm, assert_type, retries=0):
     end_prompt = """
     code should be in a single md code blocks without any additional comments or explanations.
     the function should not be called. do not print anything in the function.
-    please import the module you need. you should not pip install anything.
+    please import the module you need inside the function. you should not pip install anything.
     do not mock any data !!!
     """
 
