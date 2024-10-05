@@ -53,7 +53,7 @@ def ask_graph(data, req):
                                        , llm,
                                        str, req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
-                result = future.result()
+                result, retries_used = future.result()
                 img_path = parse_output.parse_output_img(result)
                 if img_path is not None:
                     result_list.append(img_path)
@@ -64,12 +64,12 @@ def ask_graph(data, req):
             if len(result_list) != 0:
                 for path in result_list:
                     print("img_path:", path)
-                    return path
+                    return path, retries_used
             else:
-                if tries <= config_data['ai']['tries']:
+                if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None
+                return None, retries_used
 

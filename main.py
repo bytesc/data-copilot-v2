@@ -48,10 +48,11 @@ class AskRequest(BaseModel):
 async def ask_pd(request: AskRequest):
     dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
     try:
-        result = ask_ai_for_pd.ask_pd(dict_data, request)
+        result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
         if result is None:
             return {
                 "code": 504,
+                "retries_used": retries_used,
                 "msg": "gen failed"
             }
         return {"code": 200, "answer": result.to_dict()}
@@ -63,10 +64,11 @@ async def ask_pd(request: AskRequest):
 async def ask_pd_walker(request: AskRequest):
     dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
     try:
-        result = ask_ai_for_pd.ask_pd(dict_data, request)
+        result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
         if result is None:
             return {
                 "code": 504,
+                "retries_used": retries_used,
                 "msg": "gen failed"
             }
         html = pandas_html.get_html(result)
@@ -79,7 +81,7 @@ async def ask_pd_walker(request: AskRequest):
 async def ask_graph(request: AskRequest):
     dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
     try:
-        result = ask_ai_for_graph.ask_graph(dict_data, request)
+        result, retries_used = ask_ai_for_graph.ask_graph(dict_data, request)
         if result is None:
             return {
                 "code": 504,
@@ -89,6 +91,7 @@ async def ask_graph(request: AskRequest):
             image_data = base64.b64encode(image_file.read())
         return {
             "code": 200,
+            "retries_used": retries_used,
             "image_data": image_data.decode('utf-8')
         }
     except Exception as e:

@@ -62,7 +62,7 @@ def ask(data, question, llm, assert_type, retries=0):
                 result = local_namespace['process_data'](data)
                 assert isinstance(result, assert_type), \
                     f"Expected result to be of type {assert_type.__name__}, but got a different type."
-                return result
+                return result, retries_times-1
             except Exception as e:
                 error_msg = "the code raise Exception:" + str(e) + """
                     please regenerate all the complete code based on the above information. """
@@ -78,4 +78,4 @@ def ask(data, question, llm, assert_type, retries=0):
             print("No code was generated.")
 
     logging.error(str(data_slice) + all_prompt + wrong_code + error_msg)
-    return None
+    return None, retries_times-1
