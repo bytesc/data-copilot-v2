@@ -1,5 +1,4 @@
 import yaml
-import logging
 
 config_data = None
 

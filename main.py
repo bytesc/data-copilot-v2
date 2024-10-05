@@ -79,7 +79,7 @@ async def ask_pd_walker(request: AskRequest):
 async def ask_graph(request: AskRequest):
     dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
     try:
-        result = ask_ai_for_graph.ask_graph(list_data + merged_list_data, request)
+        result = ask_ai_for_graph.ask_graph(dict_data, request)
         if result is None:
             return {
                 "code": 504,

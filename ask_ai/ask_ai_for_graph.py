@@ -39,7 +39,7 @@ def ask_graph(data, req):
     import matplotlib
     import PIL
 
-    def process_data(dataframes_list):
+    def process_data(dataframes_dict):
         # generate code to perform operations here
         return path
     ```

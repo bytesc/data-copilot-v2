@@ -17,7 +17,7 @@ def ask_pd(data, req):
     import pandas as pd
     import math
 
-    def process_data(dataframes_list):
+    def process_data(dataframes_dict):
         # generate code to perform operations here
         return result
     ```
