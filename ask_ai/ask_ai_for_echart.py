@@ -25,8 +25,10 @@ def ask_echart_block(data, req):
         from pyecharts import options as opts
         from pyecharts.charts import *
         from pyecharts.globals import *
+        
         # generate code to perform operations here
-        html_string = chart.render_notebook().data
+    
+        html_string = chart.render_notebook().data # this returns a html string
         return html_string
     ```
     """
