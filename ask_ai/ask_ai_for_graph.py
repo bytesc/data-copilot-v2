@@ -18,7 +18,7 @@ def ask_graph(data, req):
     """
 
     example_code = """
-    here is an: 
+    here is an example: 
     ```python
     def process_data(dataframes_dict):
         import pandas as pd

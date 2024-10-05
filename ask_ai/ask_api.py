@@ -52,8 +52,11 @@ def ask(data, question, llm, assert_type, retries=0):
                 local_namespace = {'data': data, 'result': None}
                 exec(ans_code, globals(), local_namespace)
                 result = local_namespace['process_data'](data)
-                assert isinstance(result, assert_type), \
-                    f"Expected result to be of type {assert_type.__name__}, but got a different type."
+                if assert_type:
+                    if assert_type==str:
+                        result=str(result)
+                    assert isinstance(result, assert_type), \
+                        f"Expected result to be of type {assert_type.__name__}, but got a different type."
                 return result, retries_times-1
             except Exception as e:
                 error_msg = "the code raise Exception:" + str(e) + """

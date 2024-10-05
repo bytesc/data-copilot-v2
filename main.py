@@ -74,6 +74,7 @@ async def ask_pd_walker(request: AskRequest):
             }
         html = pandas_html.get_html(result)
         file_path = path_tools.generate_html_path()
+        print(file_path)
         with open(file_path, 'w', encoding='utf-8') as file:
             file.write(html)
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -107,11 +108,37 @@ async def ask_graph(request: AskRequest):
         raise HTTPException(status_code=508, detail=str(e))
 
 
-@app.post("/ask-echart")
-async def ask_echart(request: AskRequest):
+@app.post("/ask-echart-block")
+async def ask_echart_block(request: AskRequest):
     dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
     try:
-        result, retries_used = ask_ai_for_echart.ask_echart(dict_data, request)
+        result, retries_used = ask_ai_for_echart.ask_echart_block(dict_data, request)
+        file_path = path_tools.generate_html_path()
+        print(file_path)
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(result)
+        with open(file_path, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+        if result is None:
+            return {
+                "code": 504,
+                "retries_used": retries_used,
+                "msg": "gen failed"
+            }
+        return {
+            "code": 200,
+            "retries_used": retries_used,
+            "echart_html": html_content
+        }
+    except Exception as e:
+        raise HTTPException(status_code=508, detail=str(e))
+
+
+@app.post("/ask-echart-file")
+async def ask_echart_file(request: AskRequest):
+    dict_data, merged_dict_data, list_data, merged_list_data = fetch_data()
+    try:
+        result, retries_used = ask_ai_for_echart.ask_echart_file(dict_data, request)
         with open(result, 'r', encoding='utf-8') as file:
             html_content = file.read()
         if result is None:
@@ -127,6 +154,7 @@ async def ask_echart(request: AskRequest):
         }
     except Exception as e:
         raise HTTPException(status_code=508, detail=str(e))
+
 
 if __name__ == "__main__":
     logging.info("server starting")

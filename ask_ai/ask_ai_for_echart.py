@@ -9,16 +9,15 @@ from ask_ai import ask_api
 from utils import path_tools
 
 
-def ask_echart(data, req):
+def ask_echart_block(data, req):
     question = req.question
-    graph_type = input_process.get_chart_type(question) + """
-    use pyecharts. the Python function should return a string file path in ./tmp_imgs/ only 
-    and the graph html generated should be stored in that path. 
-    file path must be:
+    graph_type = """
+    use pyecharts. the Python function should only return a string of html. do not save it.
+    no graph title
     """
 
     example_code = """
-    here is an: 
+    here is an example: 
     ```python
     def process_data(dataframes_dict):
         import pandas as pd
@@ -27,9 +26,59 @@ def ask_echart(data, req):
         from pyecharts.charts import *
         from pyecharts.globals import *
         # generate code to perform operations here
+        html_string = chart.render_notebook().data
         return html_string
     ```
     """
+    tries = 1
+    while 1:
+        result_list = []
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = [executor.submit(ask_api.ask, data,
+                                       question + graph_type + example_code
+                                       , llm,
+                                       str, req.retries) for _ in range(req.concurrent)]
+            for future in concurrent.futures.as_completed(futures):
+                result, retries_used = future.result()
+                if result is not None:
+                    result_list.append(result)
+                    if len(result_list) >= config_data['ai']['wait']:
+                        break
+
+            if len(result_list) != 0:
+                for result in result_list:
+                    return result, retries_used
+            else:
+                if tries < config_data['ai']['tries']:
+                    tries += 1
+                    print(tries, "##############")
+                    continue
+                print("gen failed")
+                return None, retries_used
+
+
+def ask_echart_file(data, req):
+    question = req.question
+    graph_type = input_process.get_chart_type(question) + """
+        use pyecharts. the Python function should return a string file path in ./tmp_imgs/ only 
+        and the graph html generated should be stored in that path. 
+        no graph title
+        file path must be:
+        """
+
+    example_code = """
+        here is an example: 
+        ```python
+        def process_data(dataframes_dict):
+            import pandas as pd
+            import math
+            from pyecharts import options as opts
+            from pyecharts.charts import *
+            from pyecharts.globals import *
+            # generate code to perform operations here
+            return html_string
+        ```
+        """
     tries = 1
     while 1:
         result_list = []
@@ -57,4 +106,3 @@ def ask_echart(data, req):
                     continue
                 print("gen failed")
                 return None, retries_used
-
