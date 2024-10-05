@@ -12,7 +12,7 @@ from utils import path_tools
 def ask_echart_block(data, req):
     question = req.question
     graph_type = """
-    use pyecharts. the Python function should only return a string of html. do not save it.
+    use pyecharts 2.0. the Python function should only return a string of html. do not save it.
     no graph title
     """
 
@@ -60,7 +60,7 @@ def ask_echart_block(data, req):
 def ask_echart_file(data, req):
     question = req.question
     graph_type = input_process.get_chart_type(question) + """
-        use pyecharts. the Python function should return a string file path in ./tmp_imgs/ only 
+        use pyecharts 2.0. the Python function should return a string file path in ./tmp_imgs/ only 
         and the graph html generated should be stored in that path. 
         no graph title
         file path must be:
