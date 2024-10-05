@@ -1,5 +1,7 @@
 import concurrent
 
+import pandas as pd
+
 from llm_access.LLM import llm
 from output_parsing import parse_output
 from ask_ai import input_process
@@ -20,7 +22,8 @@ def generate_img_path():
     return "./tmp_imgs/"+generate_random_string()+".png"
 
 
-def ask_graph(data, question):
+def ask_graph(data, req):
+    question = req.question
     graph_type = input_process.get_chart_type(question) + """
     the Python function should a string file path in ./tmp_imgs/ only 
     and the image generated should be stored in that path. 
@@ -31,6 +34,7 @@ def ask_graph(data, question):
     here is an: 
     ```python
     import pandas as pd
+    import math
     import matplotlib.pyplot as plt
     import matplotlib
     import PIL
@@ -46,7 +50,8 @@ def ask_graph(data, question):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(ask_api.ask, data,
                                        question + graph_type + generate_img_path() + example_code
-                                       , llm) for _ in range(config_data['ai']['concurrent'])]
+                                       , llm,
+                                       str, req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
                 result = future.result()
                 img_path = parse_output.parse_output_img(result)
