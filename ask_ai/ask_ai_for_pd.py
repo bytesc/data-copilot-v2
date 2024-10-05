@@ -1,7 +1,6 @@
 import concurrent
 
 from llm_access.LLM import llm
-from manuel_mode import pandas_html
 
 from config.get_config import config_data
 from ask_ai import ask_api
@@ -41,8 +40,7 @@ def ask_pd(data, question):
 
             if len(clean_data_pd_list) != 0:
                 clean_data_pd = clean_data_pd_list[0]
-                tb_data = [clean_data_pd.columns.to_list()] + clean_data_pd.values.tolist()
-                return tb_data
+                return clean_data_pd
             else:
                 if tries <= config_data['ai']['tries']:
                     tries += 1

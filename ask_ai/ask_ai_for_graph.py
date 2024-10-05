@@ -16,14 +16,19 @@ def generate_random_string(length=8):
     return random_string
 
 
+def generate_img_path():
+    return "./tmp_imgs/"+generate_random_string()+".png"
+
+
 def ask_graph(data, question):
-    output_filepath = "./tmp_imgs/" + generate_random_string() + ".png"
     graph_type = input_process.get_chart_type(question) + """
     the Python function should a string file path in ./tmp_imgs/ only 
     and the image generated should be stored in that path. 
     file path:
-    """ + output_filepath + """
-    here is an example: 
+    """
+
+    example_code = """
+    here is an: 
     ```python
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -35,13 +40,13 @@ def ask_graph(data, question):
         return path
     ```
     """
-    question = question + graph_type
     tries = 1
     while 1:
         result_list = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(ask_api.ask, data,
-                                       question, llm) for _ in range(config_data['ai']['concurrent'])]
+                                       question + graph_type + generate_img_path() + example_code
+                                       , llm) for _ in range(config_data['ai']['concurrent'])]
             for future in concurrent.futures.as_completed(futures):
                 result = future.result()
                 img_path = parse_output.parse_output_img(result)
