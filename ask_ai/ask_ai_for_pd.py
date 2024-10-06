@@ -33,7 +33,7 @@ def ask_pd(data, req, llm):
                                        parse_output.assert_pd,
                                        req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
-                result, retries_used = future.result()
+                result, retries_used, all_prompt = future.result()
                 if result is not None:
                     clean_data_pd_list.append(result)
                     print(result, "\n*************************")
@@ -42,11 +42,11 @@ def ask_pd(data, req, llm):
 
             if len(clean_data_pd_list) != 0:
                 clean_data_pd = clean_data_pd_list[0]
-                return clean_data_pd, retries_used
+                return clean_data_pd, retries_used, all_prompt
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used
+                return None, retries_used, all_prompt

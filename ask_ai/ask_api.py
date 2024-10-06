@@ -25,7 +25,7 @@ def get_final_prompt(data, question):
     end_prompt = """
     code should be completed in a single md code blocks without any additional comments, explanations or cmds.
     the function should not be called. do not print anything in the function.
-    please import the module you need inside the function. 
+    please import the module you need, modules must be imported inside the function.
     do not mock any data !!!
     """
 
@@ -57,7 +57,7 @@ def ask(data, question, llm, assert_func, retries=0):
                 assert_result = assert_func(result)
                 if assert_result:
                     raise Exception(assert_result)
-                return result, retries_times-1
+                return result, retries_times-1, all_prompt
             except Exception as e:
                 wrong_code = "the code was executed: ```python\n" + ans_code + "\n```"
                 error_msg = "the code raise Exception:" + str(e) + """
@@ -73,4 +73,4 @@ def ask(data, question, llm, assert_func, retries=0):
             print("No code was generated.")
 
     logging.error(all_prompt + wrong_code + error_msg)
-    return None, retries_times-1
+    return None, retries_times-1, all_prompt
