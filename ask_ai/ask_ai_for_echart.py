@@ -13,7 +13,7 @@ def get_ask_echart_block_prompt(req):
     question = req.question
     graph_type = """
         use pyecharts 2.0. the Python function should only return a string of html. do not save it.
-        no graph title
+        no graph title no set theme no set theme 
         """
 
     example_code = """
@@ -25,7 +25,7 @@ def get_ask_echart_block_prompt(req):
             from pyecharts import options as opts
             from pyecharts.charts import *
             from pyecharts.globals import *
-
+            # do not set theme!!!
             # generate code to perform operations here
 
             html_string = chart.render_notebook().data # this returns a html string
@@ -41,11 +41,12 @@ def ask_echart_block(data, req):
         result_list = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(ask_api.ask, data,
-                                       get_ask_echart_block_prompt(req)
-                                       , llm,
-                                       str, req.retries) for _ in range(req.concurrent)]
+                                       get_ask_echart_block_prompt(req),
+                                       llm,
+                                       parse_output.assert_str
+                                       , req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
-                result, retries_used, all_prompt = future.result()
+                result, retries_used = future.result()
                 if result is not None:
                     result_list.append(result)
                     if len(result_list) >= config_data['ai']['wait']:
@@ -53,14 +54,14 @@ def ask_echart_block(data, req):
 
             if len(result_list) != 0:
                 for result in result_list:
-                    return result, retries_used, all_prompt
+                    return result, retries_used
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used
 
 
 def get_ask_echart_file_prompt(req):
@@ -68,7 +69,7 @@ def get_ask_echart_file_prompt(req):
     graph_type = input_process.get_chart_type(question) + """
             use pyecharts 2.0. the Python function should return a string file path in ./tmp_imgs/ only 
             and the graph html generated should be stored in that path. 
-            no graph title
+            no graph title no set theme no set theme 
             file path must be:
             """
 
@@ -94,11 +95,12 @@ def ask_echart_file(data, req):
         result_list = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(ask_api.ask, data,
-                                       get_ask_echart_block_prompt(req)
-                                       , llm,
-                                       str, req.retries) for _ in range(req.concurrent)]
+                                       get_ask_echart_file_prompt(req),
+                                       llm,
+                                       parse_output.assert_html_file,
+                                       req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
-                result, retries_used, all_prompt = future.result()
+                result, retries_used = future.result()
                 graph_path = parse_output.parse_output_html(result)
                 if graph_path is not None:
                     result_list.append(graph_path)
@@ -108,11 +110,11 @@ def ask_echart_file(data, req):
 
             if len(result_list) != 0:
                 for graph_path in result_list:
-                    return graph_path, retries_used, all_prompt
+                    return graph_path, retries_used
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used

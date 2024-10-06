@@ -33,7 +33,7 @@ def get_final_prompt(data, question):
     return all_prompt
 
 
-def ask(data, question, llm, assert_type, retries=0):
+def ask(data, question, llm, assert_func, retries=0):
     all_prompt = get_final_prompt(data, question)
     retries_times = 0
     error_msg = ""
@@ -54,10 +54,10 @@ def ask(data, question, llm, assert_type, retries=0):
                 local_namespace = {'data': data, 'result': None}
                 exec(ans_code, globals(), local_namespace)
                 result = local_namespace['process_data'](data)
-                if assert_type:
-                    assert isinstance(result, assert_type), \
-                        f"Expected result to be of type {assert_type.__name__}, but got a {type(result)}."
-                return result, retries_times-1, all_prompt
+                assert_result = assert_func(result)
+                if assert_result:
+                    raise Exception(assert_result)
+                return result, retries_times-1
             except Exception as e:
                 wrong_code = "the code was executed: ```python\n" + ans_code + "\n```"
                 error_msg = "the code raise Exception:" + str(e) + """
@@ -73,4 +73,4 @@ def ask(data, question, llm, assert_type, retries=0):
             print("No code was generated.")
 
     logging.error(all_prompt + wrong_code + error_msg)
-    return None, retries_times-1, all_prompt
+    return None, retries_times-1

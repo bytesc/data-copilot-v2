@@ -6,7 +6,7 @@ from config.get_config import config_data
 from ask_ai import ask_api
 
 import pandas as pd
-
+from utils.output_parsing import parse_output
 
 def get_ask_pd_prompt(req):
     question = req.question
@@ -32,9 +32,10 @@ def ask_pd(data, req):
             futures = [executor.submit(ask_api.ask, data,
                                        get_ask_pd_prompt(req),
                                        llm,
-                                       pd.DataFrame, req.retries) for _ in range(req.concurrent)]
+                                       parse_output.assert_pd,
+                                       req.retries) for _ in range(req.concurrent)]
             for future in concurrent.futures.as_completed(futures):
-                result, retries_used, all_prompt = future.result()
+                result, retries_used = future.result()
                 if result is not None:
                     clean_data_pd_list.append(result)
                     print(result, "\n*************************")
@@ -43,11 +44,11 @@ def ask_pd(data, req):
 
             if len(clean_data_pd_list) != 0:
                 clean_data_pd = clean_data_pd_list[0]
-                return clean_data_pd, retries_used, all_prompt
+                return clean_data_pd, retries_used
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used

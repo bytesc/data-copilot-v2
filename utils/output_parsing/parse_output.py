@@ -1,5 +1,7 @@
 import re
 
+import pandas
+
 
 def parse_output_img(txt):
     try:
@@ -41,3 +43,37 @@ def parse_generated_code(txt):
     if len(matches) == 0:
         return None
     return matches[0]
+
+
+def assert_png_file(txt):
+    path = parse_output_img(txt)
+    if path is None:
+        return f"function should return a string png file path in ./tmp_imgs/ only, but get {txt}"
+    else:
+        return None
+
+
+def assert_html_file(txt):
+    path = parse_output_html(txt)
+    if path is None:
+        return f"function should return a string html file path in ./tmp_imgs/ only, but get {txt}"
+    else:
+        return None
+
+
+def assert_pd(obj):
+    try:
+        assert isinstance(obj, pandas.DataFrame), \
+            f"Expected result to be of type {pandas.DataFrame.__name__}, but got a {type(obj)}."
+    except Exception as e:
+        return str(e)
+    return None
+
+
+def assert_str(obj):
+    try:
+        assert isinstance(obj, str), \
+            f"Expected result to be of type {str.__name__}, but got a {type(obj)}."
+    except Exception as e:
+        return str(e)
+    return None

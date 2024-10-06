@@ -42,17 +42,15 @@ class AskRequest(BaseModel):
 @app.post("/ask/pd")
 async def ask_pd(request: AskRequest):
     dict_data = fetch_data()
-    result, retries_used, all_prompt = ask_ai_for_pd.ask_pd(dict_data, request)
+    result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
     if result is None:
         return {
             "code": 504,
             "retries_used": retries_used,
-            "all_prompt": all_prompt,
             "msg": "gen failed"
         }
     return {"code": 200,
             "retries_used": retries_used,
-            "all_prompt": all_prompt,
             "answer": result.to_dict()}
 
 
@@ -60,12 +58,11 @@ async def ask_pd(request: AskRequest):
 async def ask_pd_walker(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used, all_prompt = ask_ai_for_pd.ask_pd(dict_data, request)
+        result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
         if result is None:
             return {
                 "code": 504,
                 "retries_used": retries_used,
-                "all_prompt": all_prompt,
                 "msg": "gen failed"
             }
         html = pandas_html.get_html(result)
@@ -78,7 +75,6 @@ async def ask_pd_walker(request: AskRequest):
         logging.info(request.question, result)
         return {"code": 200,
                 "retries_used": retries_used,
-                "all_prompt": all_prompt,
                 "html": html_content,
                 "file": file_path}
     except Exception as e:
@@ -89,7 +85,7 @@ async def ask_pd_walker(request: AskRequest):
 async def ask_graph(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used, all_prompt = ask_ai_for_graph.ask_graph(dict_data, request)
+        result, retries_used = ask_ai_for_graph.ask_graph(dict_data, request)
         if result is None:
             return {
                 "code": 504,
@@ -101,7 +97,6 @@ async def ask_graph(request: AskRequest):
         return {
             "code": 200,
             "retries_used": retries_used,
-            "all_prompt": all_prompt,
             "image_data": image_data.decode('utf-8'),
             "file": result
         }
@@ -113,12 +108,11 @@ async def ask_graph(request: AskRequest):
 async def ask_echart_block(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used, all_prompt = ask_ai_for_echart.ask_echart_block(dict_data, request)
+        result, retries_used = ask_ai_for_echart.ask_echart_block(dict_data, request)
         if result is None:
             return {
                     "code": 504,
                     "retries_used": retries_used,
-                    "all_prompt": all_prompt,
                     "msg": "gen failed"
             }
         file_path = path_tools.generate_html_path()
@@ -131,7 +125,6 @@ async def ask_echart_block(request: AskRequest):
         return {
             "code": 200,
             "retries_used": retries_used,
-            "all_prompt": all_prompt,
             "html": html_content,
             "file": file_path
         }
@@ -143,12 +136,11 @@ async def ask_echart_block(request: AskRequest):
 async def ask_echart_file(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used, all_prompt = ask_ai_for_echart.ask_echart_file(dict_data, request)
+        result, retries_used = ask_ai_for_echart.ask_echart_file(dict_data, request)
         if result is None:
             return {
                 "code": 504,
                 "retries_used": retries_used,
-                "all_prompt": all_prompt,
                 "msg": "gen failed"
             }
         with open(result, 'r', encoding='utf-8') as file:
@@ -157,12 +149,43 @@ async def ask_echart_file(request: AskRequest):
         return {
             "code": 200,
             "retries_used": retries_used,
-            "all_prompt": all_prompt,
             "html": html_content,
             "file": result
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/prompt/pd")
+async def prompt_pd(request: AskRequest):
+    dict_data = fetch_data()
+    all_prompt = ask_api.get_final_prompt(dict_data, ask_ai_for_pd.get_ask_pd_prompt(request))
+    return {"code": 200,
+            "all_prompt": all_prompt}
+
+
+@app.post("/prompt/graph")
+async def prompt_pd(request: AskRequest):
+    dict_data = fetch_data()
+    all_prompt = ask_api.get_final_prompt(dict_data, ask_ai_for_graph.get_ask_graph_prompt(request))
+    return {"code": 200,
+            "all_prompt": all_prompt}
+
+
+@app.post("/prompt/echart-block")
+async def prompt_pd(request: AskRequest):
+    dict_data = fetch_data()
+    all_prompt = ask_api.get_final_prompt(dict_data, ask_ai_for_echart.get_ask_echart_block_prompt(request))
+    return {"code": 200,
+            "all_prompt": all_prompt}
+
+
+@app.post("/prompt/echart-file")
+async def prompt_pd(request: AskRequest):
+    dict_data = fetch_data()
+    all_prompt = ask_api.get_final_prompt(dict_data, ask_ai_for_echart.get_ask_echart_file_prompt(request))
+    return {"code": 200,
+            "all_prompt": all_prompt}
 
 
 if __name__ == "__main__":
