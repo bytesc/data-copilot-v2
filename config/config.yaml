@@ -6,6 +6,7 @@ ai:
   wait: 1
 
 llm:
+  model_provider: qwen #qwen #openai
   model: qwen1.5-110b-chat
   url: "https://open.bigmodel.cn/api/paas/v4/"
 

@@ -1,6 +1,5 @@
 import concurrent
 
-from llm_access.LLM import llm
 from utils.output_parsing import parse_output
 from ask_ai import input_process
 from config.get_config import config_data
@@ -35,7 +34,7 @@ def get_ask_echart_block_prompt(req):
     return question + graph_type + example_code
 
 
-def ask_echart_block(data, req):
+def ask_echart_block(data, req, llm):
     tries = 1
     while 1:
         result_list = []
@@ -66,7 +65,7 @@ def ask_echart_block(data, req):
 
 def get_ask_echart_file_prompt(req):
     question = req.question
-    graph_type = input_process.get_chart_type(question) + """
+    graph_type = """
             use pyecharts 2.0. the Python function should return a string file path in ./tmp_imgs/ only 
             and the graph html generated should be stored in that path. 
             no graph title no set theme no set theme 
@@ -89,7 +88,7 @@ def get_ask_echart_file_prompt(req):
     return question + graph_type + path_tools.generate_html_path() + example_code
 
 
-def ask_echart_file(data, req):
+def ask_echart_file(data, req, llm):
     tries = 1
     while 1:
         result_list = []

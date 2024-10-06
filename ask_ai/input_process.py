@@ -1,4 +1,3 @@
-from llm_access.LLM import llm
 from llm_access.call_llm_test import call_llm
 
 charts = {
@@ -13,7 +12,7 @@ charts_string = str(charts)
 # print(chart_types, charts)
 
 
-def get_chart_type(question):
+def get_chart_type(question, llm):
     graph_type = call_llm(question + "Based on the task described, which is most suitable: " +
                           chart_types + ". "
                                         "You can only choice one of them without any explanation. "

@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from utils.manuel_mode import pandas_html
 from utils import path_tools
+from llm_access.LLM import get_llm
 
 import logging
 
@@ -20,6 +21,9 @@ plt.rcParams['axes.unicode_minus'] = False
 
 logging.basicConfig(filename='./ask_ai.log', level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', encoding="utf-8")
+
+
+llm = get_llm()
 
 
 def fetch_data():
@@ -42,7 +46,7 @@ class AskRequest(BaseModel):
 @app.post("/ask/pd")
 async def ask_pd(request: AskRequest):
     dict_data = fetch_data()
-    result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
+    result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request, llm)
     if result is None:
         return {
             "code": 504,
@@ -58,7 +62,7 @@ async def ask_pd(request: AskRequest):
 async def ask_pd_walker(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request)
+        result, retries_used = ask_ai_for_pd.ask_pd(dict_data, request, llm)
         if result is None:
             return {
                 "code": 504,
@@ -85,7 +89,7 @@ async def ask_pd_walker(request: AskRequest):
 async def ask_graph(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used = ask_ai_for_graph.ask_graph(dict_data, request)
+        result, retries_used = ask_ai_for_graph.ask_graph(dict_data, request, llm)
         if result is None:
             return {
                 "code": 504,
@@ -108,7 +112,7 @@ async def ask_graph(request: AskRequest):
 async def ask_echart_block(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used = ask_ai_for_echart.ask_echart_block(dict_data, request)
+        result, retries_used = ask_ai_for_echart.ask_echart_block(dict_data, request, llm)
         if result is None:
             return {
                     "code": 504,
@@ -136,7 +140,7 @@ async def ask_echart_block(request: AskRequest):
 async def ask_echart_file(request: AskRequest):
     dict_data = fetch_data()
     try:
-        result, retries_used = ask_ai_for_echart.ask_echart_file(dict_data, request)
+        result, retries_used = ask_ai_for_echart.ask_echart_file(dict_data, request, llm)
         if result is None:
             return {
                 "code": 504,

@@ -1,6 +1,5 @@
 import concurrent
 
-from llm_access.LLM import llm
 from utils.output_parsing import parse_output
 from ask_ai import input_process
 from config.get_config import config_data
@@ -9,9 +8,9 @@ from ask_ai import ask_api
 from utils import path_tools
 
 
-def get_ask_graph_prompt(req):
+def get_ask_graph_prompt(req, llm):
     question = req.question
-    graph_type = input_process.get_chart_type(question) + """
+    graph_type = input_process.get_chart_type(question, llm) + """
         use matplotlib. the Python function should return a string file path in ./tmp_imgs/ only 
         and the image generated should be stored in that path. 
         file path must be:
@@ -33,13 +32,13 @@ def get_ask_graph_prompt(req):
     return question + graph_type + path_tools.generate_img_path() + example_code
 
 
-def ask_graph(data, req):
+def ask_graph(data, req, llm):
     tries = 1
     while 1:
         result_list = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(ask_api.ask, data,
-                                       get_ask_graph_prompt(req),
+                                       get_ask_graph_prompt(req, llm),
                                        llm,
                                        parse_output.assert_png_file
                                        , req.retries) for _ in range(req.concurrent)]

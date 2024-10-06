@@ -1,7 +1,5 @@
 import concurrent
 
-from llm_access.LLM import llm
-
 from config.get_config import config_data
 from ask_ai import ask_api
 
@@ -24,7 +22,7 @@ def get_ask_pd_prompt(req):
     return question + example_code
 
 
-def ask_pd(data, req):
+def ask_pd(data, req, llm):
     tries = 1
     while 1:
         clean_data_pd_list = []
