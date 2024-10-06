@@ -12,6 +12,10 @@ llm:
 
 # qwen1.5-72b-chat   qwen1.5-110b-chat
 # qwen-turbo  qwen-plus   qwen-max   qwen-long
+# https://dashscope.aliyun.com/
+
+# glm-4
+# https://open.bigmodel.cn
 
 
 server_port: 8087

@@ -32,15 +32,6 @@ Utilizing natural language queries, this system intelligently parses database st
 
 ## Basic Technical Principles
 
-### System Architecture
-
-![](./readme_img/sysarc.png)
-
-Users access the Web application through a browser, which communicates with the server using the WebSocket protocol via the Pywebio framework.
-
-The service layer uses LLM to generate code and tool suggestions, the Python interpreter to execute code, and Pygwalker to provide interactive plotting support.
-
-The data layer uses MySQL as the database.
 
 ### Basic flow of single-instance generation
 
@@ -69,41 +60,6 @@ Repeated feedback of exceptions and assertions can cause the prompt to become in
 
 Therefore, multi-threaded concurrent execution is introduced to ask questions independently multiple times, reducing the probability of overall generation failure caused by unstable LLM outputs, and improving system stability and response speed.
 
-## Display
-
-Query Interface
-
-![Query Interface](./readme_img/img1.png)
-![Query Interface](./readme_img/img2.png)
-
-Based on the retrieved data, the system intelligently selects chart types for plotting, supporting structured queries across multiple tables. In this example, it intelligently connects the employee table and the salary table for a structured query, selecting a bar chart for plotting.
-
-![Database Structure](./readme_img/db.png)
-![Structured Query Result](./readme_img/img4.png)
-
-If unsatisfied with the intelligent plotting results, advanced mode allows for manual interactive plotting based on the queried data.
-
-![Advanced Plotting](./readme_img/img7.png)
-
-Supports intelligent statistical computations. In this example, it intelligently calculates the percentage of sales in each country, selecting a pie chart for plotting.
-
-![Database Structure](./readme_img/db1.png)
-![Statistical Computation Result](./readme_img/img10.png)
-![Statistical Computation Result](./readme_img/img12.png)
-
-Advanced mode enables interactive plotting.
-
-![Advanced Plotting](./readme_img/img15.png)
-![Advanced Plotting](./readme_img/img16.png)
-
-Also supports statistical computations such as mean, sum, max, min, etc.
-
-![Statistical Computation Result](./readme_img/img20.png)
-![Statistical Computation Result](./readme_img/img22.png)
-![Statistical Computation Result](./readme_img/img23.png)
-![Statistical Computation Result](./readme_img/img24.png)
-![Statistical Computation Result](./readme_img/img31.png)
-![Statistical Computation Result](./readme_img/img33.png)
 
 ## How to Use
 
@@ -134,37 +90,28 @@ If using the Dashscope `qwen` API (recommended):
 
 ```yaml
 llm:
-  model: qwen1.5-110b-chat # Model name
-  url: ""  # No need to fill this when using the Dashscope `qwen` API
+  model_provider: qwen #qwen #openai
+  model: qwen1.5-110b-chat
+  url: ""
 
 # qwen1.5-72b-chat   qwen1.5-110b-chat
 # qwen-turbo  qwen-plus   qwen-max   qwen-long
+# https://dashscope.aliyun.com/
 ```
 
 Also, in `llm_access/LLM.py`, uncomment the following line:
 
-```python
-# llm = llm_access.openai_access.llm
-llm = llm_access.qwen_access.llm
-```
-
-If using the OpenAI API (the provided endpoint URL is for the GPT-like model's OpenAI compatible API):
 
 ```yaml
 llm:
-  model: glm-4 # Model name
-  url: "https://open.bigmodel.cn/api/paas/v4/"   # endpoint_url
+  model_provider: openai
+  model: glm-4
+  url: "https://open.bigmodel.cn/api/paas/v4/"
 
-# qwen1.5-72b-chat   qwen1.5-110b-chat
-# qwen-turbo  qwen-plus   qwen-max   qwen-long
+# glm-4
+# https://open.bigmodel.cn
 ```
 
-Also, in `llm_access/LLM.py`, uncomment the following line:
-
-```python
-llm = llm_access.openai_access.llm
-# llm = llm_access.qwen_access.llm
-```
 
 If offline deployment is needed, relevant code is in `./llm_access/qwen_access.py`.
 

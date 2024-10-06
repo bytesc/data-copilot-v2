@@ -33,16 +33,6 @@
 
 ## 基本技术原理
 
-### 系统架构
-
-![](./readme_img/sysarc.png)
-
-用户通过浏览器访问 Web 应用，浏览器通过 Pywebio 框架使用 websocket 协议与服务端通信。
-
-服务层使用 LLM 生成代码和工具建议，python 解释器执行代码，pygwalker 提供交互式绘图支持。
-
-数据层使用 mysql 作为数据库。
-
 ### 单次生成的基本流程
 
 ![](./readme_img/t1.png)
@@ -70,41 +60,6 @@
 
 所以引入多线程并发执行，同时多次独立提问，降低 LLM 输出不稳定导致整体生成失败的概率，提高系统稳定性和响应速度。
 
-## 展示
-
-提问界面
-
-![](./readme_img/img1.png)
-![](./readme_img/img2.png)
-
-根据查到的数据，智能选择图表类型绘图，支持多表结构化查询。在这个例子中，智能连接了员工表和工资表，进行结构化查询。智能选择了柱状图绘图。
-
-![](./readme_img/db.png)
-![](./readme_img/img4.png)
-
-如果对智能绘图结果不满意，高级模式，根据智能查询到的数据，手动交互式绘图
-
-![](./readme_img/img7.png)
-
-支持智能智能统计计算。在这个例子中，智能统计了在各国销量的百分比，智能选择了饼图绘图。
-
-![](./readme_img/db1.png)
-![](./readme_img/img10.png)
-![](./readme_img/img12.png)
-
-高级模式，交互式绘图
-
-![](./readme_img/img15.png)
-![](./readme_img/img16.png)
-
-同样支持平均值，求和，最大值，最小值等统计计算
-
-![](./readme_img/img20.png)
-![](./readme_img/img22.png)
-![](./readme_img/img23.png)
-![](./readme_img/img24.png)
-![](./readme_img/img31.png)
-![](./readme_img/img33.png)
 
 ## 如何使用
 
@@ -131,32 +86,27 @@ mysql: mysql+pymysql://root:123456@127.0.0.1/data_copilot
 如果使用 dashscope `qwen` api （推荐）
 ```yml
 llm:
-  model: qwen1.5-110b-chat # 模型名称
-  url: ""  # 使用 dashscope `qwen` api 时此项无需填写
+  model_provider: qwen #qwen #openai
+  model: qwen1.5-110b-chat
+  url: ""
 
 # qwen1.5-72b-chat   qwen1.5-110b-chat
 # qwen-turbo  qwen-plus   qwen-max   qwen-long
+# https://dashscope.aliyun.com/
+
 ```
-同时在 `llm_access/LLM.py` 中
-```python
-# llm = llm_access.openai_access.llm
-llm = llm_access.qwen_access.llm
-```
+
 
 如果使用 openai api （此处填写的是 glm 的 openai 兼容 api）
 
 ```yml
 llm:
-  model: glm-4 # 模型名称
-  url: "https://open.bigmodel.cn/api/paas/v4/"   # endpoint_url 请求地址
+  model_provider: openai
+  model: glm-4
+  url: "https://open.bigmodel.cn/api/paas/v4/"
 
-# qwen1.5-72b-chat   qwen1.5-110b-chat
-# qwen-turbo  qwen-plus   qwen-max   qwen-long
-```
-同时在 `llm_access/LLM.py` 中
-```python
-llm = llm_access.openai_access.llm
-# llm = llm_access.qwen_access.llm
+# glm-4
+# https://open.bigmodel.cn
 ```
 
 如果需要本地离线部署，相关代码在 `./llm_access/qwen_access.py`
@@ -179,8 +129,6 @@ main.py 是项目入口，运行此文件即可启动服务器
 ```bash
 python main.py
 ```
-
-默认情况下，浏览器输入 [ http://127.0.0.1:8087/ ]( http://127.0.0.1:8087/ )即可
 
 
 
