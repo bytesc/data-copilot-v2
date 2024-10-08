@@ -3,7 +3,7 @@ mysql: mysql+pymysql://root:123456@127.0.0.1/data_copilot
 
 ai:
   tries: 1
-  wait: 1
+  wait: 100
 
 llm:
   model_provider: qwen #qwen #openai

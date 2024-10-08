@@ -63,7 +63,7 @@ def ask_echart_block(data, req, llm):
                 return None, retries_used, all_prompt
 
 
-def get_ask_echart_file_prompt(req):
+def get_ask_echart_file_prompt(req, tmp_file=False):
     question = req.question
     graph_type = """
             use pyecharts 2.0. the Python function should return a string file path in ./tmp_imgs/ only 
@@ -85,7 +85,10 @@ def get_ask_echart_file_prompt(req):
                 return html_string
             ```
             """
-    return question + graph_type + path_tools.generate_html_path() + example_code
+    if not tmp_file:
+        return question + graph_type + path_tools.generate_img_path() + example_code
+    else:
+        return question + graph_type + "./tmp_imgs/tmp.png" + example_code
 
 
 def ask_echart_file(data, req, llm):
@@ -109,11 +112,11 @@ def ask_echart_file(data, req, llm):
 
             if len(result_list) != 0:
                 for graph_path in result_list:
-                    return graph_path, retries_used, all_prompt
+                    return graph_path, retries_used, all_prompt, len(result_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used, all_prompt, 0.0

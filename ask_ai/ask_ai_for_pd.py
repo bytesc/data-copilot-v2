@@ -42,11 +42,11 @@ def ask_pd(data, req, llm):
 
             if len(clean_data_pd_list) != 0:
                 clean_data_pd = clean_data_pd_list[0]
-                return clean_data_pd, retries_used, all_prompt
+                return clean_data_pd, retries_used, all_prompt, len(clean_data_pd_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used, all_prompt, 0.0

@@ -8,14 +8,15 @@ from ask_ai import ask_api
 from utils import path_tools
 
 
-def get_ask_graph_prompt(req, llm):
+def get_ask_graph_prompt(req, llm, tmp_file=False, img_type=True):
     question = req.question
-    graph_type = input_process.get_chart_type(question, llm) + """
+    graph_type = """
         use matplotlib. the Python function should return a string file path in ./tmp_imgs/ only 
         and the image generated should be stored in that path. 
         file path must be:
         """
-
+    if img_type:
+        graph_type = input_process.get_chart_type(question, llm) + graph_type
     example_code = """
         here is an example: 
         ```python
@@ -29,7 +30,10 @@ def get_ask_graph_prompt(req, llm):
             return path
         ```
         """
-    return question + graph_type + path_tools.generate_img_path() + example_code
+    if not tmp_file:
+        return question + graph_type + path_tools.generate_img_path() + example_code
+    else:
+        return question + graph_type + "./tmp_imgs/tmp.png" + example_code
 
 
 def ask_graph(data, req, llm):
@@ -54,12 +58,11 @@ def ask_graph(data, req, llm):
             if len(result_list) != 0:
                 for path in result_list:
                     print("img_path:", path)
-                    return path, retries_used, all_prompt
+                    return path, retries_used, all_prompt, len(result_list) / req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
-
+                return None, retries_used, all_prompt, 0.0
