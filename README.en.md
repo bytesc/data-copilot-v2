@@ -30,6 +30,10 @@ Utilizing natural language queries, this system intelligently parses database st
 - Utilize DataFrame mapping in databases to avoid the risk of SQL injection attacks by manipulating the LLM through induced queries.
 - Introduce word embedding models and vector databases as a replacement for simple regular expressions, in order to address the challenge of mapping fuzzy outputs from LLM to specific system code executions.
 
+
+- ✨ Utilize BERT (Bidirectional Encoder Representations from Transformers) to **vectorize** the question text and prompt, and then apply linear regression, logistic regression, neural networks (nn), and Transformer models for **regression**. **Predict** the appropriate concurrency levels and retry counts based on the question text, and compare the effectiveness of different models.
+
+
 ## Basic Technical Principles
 
 

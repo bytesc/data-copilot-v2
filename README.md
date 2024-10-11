@@ -30,6 +30,8 @@
 - 使用数据库的 DataFrame 映射进行操作，避免通过诱导大语言模型进行 sql 注入攻击的风险。
 - 引入词嵌入模型和向量数据库，替代单纯的正则表达式，解决大语言模型的模糊输出，到确定的系统代码执行的映射难题。
 
+- ✨ 使用 BERT(Bidirectional Encoder Representation from Transformers) 将提问文本和 prompt **向量化**，再使用线性回归, Logistic 回归, nn, Transformer 多种模型进行**回归**，根据提问文本**预测**合适的并发数量和重试次数，对比不同模型的效果，
+
 
 ## 基本技术原理
 
