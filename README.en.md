@@ -55,7 +55,7 @@ Utilizing natural language queries, this system intelligently parses database st
 
 ![](./readme_img/t10.png)
 
-Using the BERT (Bidirectional Encoder Representation from Transformers) combined with a CNN classifier, determine the optimal retries value based on the difficulty of the question. Find a balance between the success rate of generation and the number of retries to improve response speed.
+Using the BERT (Bidirectional Encoder Representation from Transformers) combined with `regression` , predict the optimal retries value based on the difficulty of the question. Find a balance between the success rate of generation and the number of retries to improve response speed.
 
 
 ### Concurrency generation control
@@ -70,7 +70,7 @@ Therefore, multi-threaded concurrent execution is introduced to ask questions in
 
 ![](./readme_img/t11.png)
 
-Using BERT combined with a CNN classifier, determine the best number of concurrent requests (Concurrent) based on the difficulty of the question. Find a balance between the success rate of generation and the cost of LLM (Large Language Model) invocation to improve response speed.
+Using BERT combined with `regression`, predict the best number of concurrent requests (Concurrent) based on the difficulty of the question. Find a balance between the success rate of generation and the cost of LLM (Large Language Model) invocation to improve response speed.
 
 
 ## How to Use
