@@ -51,6 +51,12 @@ Utilizing natural language queries, this system intelligently parses database st
 
 7. Display the successful code execution output (charts) on the user interface and launch the interactive plotting interface based on the output data.
 
+#### Learning for Retries
+
+![](./readme_img/t10.png)
+
+Using the BERT (Bidirectional Encoder Representation from Transformers) combined with a CNN classifier, determine the optimal retries value based on the difficulty of the question. Find a balance between the success rate of generation and the number of retries to improve response speed.
+
 
 ### Concurrency generation control
 
@@ -59,6 +65,12 @@ Utilizing natural language queries, this system intelligently parses database st
 Repeated feedback of exceptions and assertions can cause the prompt to become increasingly long, causing the LLM to lose focus and affect the generation effect. The LLM's first incorrect response can also affect subsequent generations. Starting over may yield better results.
 
 Therefore, multi-threaded concurrent execution is introduced to ask questions independently multiple times, reducing the probability of overall generation failure caused by unstable LLM outputs, and improving system stability and response speed.
+
+#### Learning for Concurrent
+
+![](./readme_img/t11.png)
+
+Using BERT combined with a CNN classifier, determine the best number of concurrent requests (Concurrent) based on the difficulty of the question. Find a balance between the success rate of generation and the cost of LLM (Large Language Model) invocation to improve response speed.
 
 
 ## How to Use

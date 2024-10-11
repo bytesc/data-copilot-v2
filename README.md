@@ -55,7 +55,7 @@
 
 ![](./readme_img/t10.png)
 
-使用 bert 加 CNN 分类器的方式，根据问题难度，给出最佳 `retries` 值。找到生成成功率和重试次数的平衡，提高响应速度。
+使用 BERT(Bidirectional Encoder Representation from Transformers) 加 CNN 分类器的方式，根据问题难度，给出最佳 `retries` 值。找到生成成功率和重试次数的平衡，提高响应速度。
 
 
 ### 并发生成控制
