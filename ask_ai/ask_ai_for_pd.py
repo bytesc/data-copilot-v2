@@ -6,10 +6,12 @@ from ask_ai import ask_api
 import pandas as pd
 from utils.output_parsing import parse_output
 
+
 def get_ask_pd_prompt(req):
     question = req.question
     example_code = """ 
        the Python function should return a single pandas dataframe only!!! 
+       do not draw any graph at this step, even if the question asked. do not save any thing. 
        here is an example: 
        ```python
        def process_data(dataframes_dict):

@@ -127,6 +127,35 @@ async def ask_graph(request: AskRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/ask/graph-2")
+async def ask_graph_2(request: AskRequest):
+    dict_data = fetch_data()
+    try:
+        result, _, _, _ = ask_ai_for_pd.ask_pd(dict_data, request, llm)
+        result, retries_used, all_prompt, success = ask_ai_for_graph.ask_graph(result, request, llm)
+        if result is None:
+            return {
+                "code": 504,
+                "retries_used": retries_used,
+                "msg": "gen failed",
+                "image_data": "",
+                "file": "",
+                "prompt": all_prompt,
+                "success": 0.0
+            }
+        with open(result, "rb") as image_file:
+            image_data = base64.b64encode(image_file.read())
+        return {
+            "code": 200,
+            "retries_used": retries_used,
+            "image_data": image_data.decode('utf-8'),
+            "file": result,
+            "prompt": all_prompt,
+            "success": success
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/ask/echart-block")
 async def ask_echart_block(request: AskRequest):
     dict_data = fetch_data()
@@ -190,6 +219,37 @@ async def ask_echart_file(request: AskRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@app.post("/ask/echart-file-2")
+async def ask_echart_file_2(request: AskRequest):
+    dict_data = fetch_data()
+
+    try:
+        result, _, _, _ = ask_ai_for_pd.ask_pd(dict_data, request, llm)
+        result, retries_used, all_prompt, success = ask_ai_for_echart.ask_echart_file(result, request, llm)
+        if result is None:
+            return {
+                "code": 504,
+                "retries_used": retries_used,
+                "msg": "gen failed",
+                "html": "",
+                "file": "",
+                "prompt": all_prompt,
+                "success": 0.0
+            }
+        with open(result, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+        logging.info(request.question, result)
+        return {
+            "code": 200,
+            "retries_used": retries_used,
+            "html": html_content,
+            "file": result,
+            "prompt": all_prompt,
+            "success": success
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/prompt/pd")
 async def prompt_pd(request: AskRequest):
