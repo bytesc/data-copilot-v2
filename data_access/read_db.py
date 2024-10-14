@@ -3,8 +3,13 @@ from sqlalchemy import text
 
 from data_access.db_conn import engine
 
+tables_data = None
+
 
 def get_data_from_db():
+    global tables_data
+    if tables_data is not None:
+        return tables_data
     with engine.connect() as connection:
         query = text("SHOW TABLES")
         tables = connection.execute(query).fetchall()

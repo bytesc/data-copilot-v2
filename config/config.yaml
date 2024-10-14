@@ -1,4 +1,4 @@
-mysql: mysql+pymysql://root:123456@127.0.0.1/data_copilot
+mysql: mysql+pymysql://root:123456@127.0.0.1/employees
 # classicmodels data_copilot
 
 ai:
