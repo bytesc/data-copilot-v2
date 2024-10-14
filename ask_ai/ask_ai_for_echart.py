@@ -12,6 +12,7 @@ def get_ask_echart_block_prompt(req):
     question = req.question
     graph_type = """
         use pyecharts 2.0. the Python function should only return a string of html. do not save it.
+        please choose different graph type based on the question. 
         no graph title no set theme no set theme 
         """
 
@@ -68,6 +69,7 @@ def get_ask_echart_file_prompt(req, tmp_file=False):
     graph_type = """
             use pyecharts 2.0. the Python function should return a string file path in ./tmp_imgs/ only 
             and the graph html generated should be stored in that path. 
+            please choose different graph type based on the question. 
             no graph title no set theme no set theme 
             file path must be:
             """
@@ -82,13 +84,14 @@ def get_ask_echart_file_prompt(req, tmp_file=False):
                 from pyecharts.charts import *
                 from pyecharts.globals import *
                 # generate code to perform operations here
-                return html_string
+                chart.render(file_path)
+                return file_path
             ```
             """
     if not tmp_file:
-        return question + graph_type + path_tools.generate_img_path() + example_code
+        return question + graph_type + path_tools.generate_html_path() + example_code
     else:
-        return question + graph_type + "./tmp_imgs/tmp.png" + example_code
+        return question + graph_type + "./tmp_imgs/tmp.html" + example_code
 
 
 def ask_echart_file(data, req, llm):

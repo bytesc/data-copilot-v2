@@ -52,6 +52,7 @@ async def ask_pd(request: AskRequest):
             "code": 504,
             "retries_used": retries_used,
             "msg": "gen failed",
+            "answer": "",
             "prompt": all_prompt,
             "success": 0.0
         }
@@ -73,6 +74,8 @@ async def ask_pd_walker(request: AskRequest):
                 "code": 504,
                 "retries_used": retries_used,
                 "msg": "gen failed",
+                "html": "",
+                "file": "",
                 "prompt": all_prompt,
                 "success": 0.0
             }
@@ -105,6 +108,8 @@ async def ask_graph(request: AskRequest):
                 "code": 504,
                 "retries_used": retries_used,
                 "msg": "gen failed",
+                "image_data": "",
+                "file": "",
                 "prompt": all_prompt,
                 "success": 0.0
             }
@@ -132,6 +137,8 @@ async def ask_echart_block(request: AskRequest):
                     "code": 504,
                     "retries_used": retries_used,
                     "msg": "gen failed",
+                    "html": "",
+                    "file": "",
                     "prompt": all_prompt,
                     "success": 0.0
             }
@@ -164,6 +171,8 @@ async def ask_echart_file(request: AskRequest):
                 "code": 504,
                 "retries_used": retries_used,
                 "msg": "gen failed",
+                "html": "",
+                "file": "",
                 "prompt": all_prompt,
                 "success": 0.0
             }
