@@ -50,15 +50,14 @@ def ask_graph(data, req, llm):
                 result, retries_used, all_prompt = future.result()
                 img_path = parse_output.parse_output_img(result)
                 if img_path is not None:
-                    result_list.append(img_path)
+                    result_list.append([img_path,retries_used])
                     print(img_path, "\n*************************")
                     if len(result_list) >= config_data['ai']['wait']:
                         break
 
             if len(result_list) != 0:
-                for path in result_list:
-                    print("img_path:", path)
-                    return path, retries_used, all_prompt, len(result_list) / req.concurrent
+                for item in result_list:
+                    return item[0], item[1], all_prompt, len(result_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1

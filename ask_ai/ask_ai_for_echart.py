@@ -22,9 +22,7 @@ def get_ask_echart_block_prompt(req):
         def process_data(dataframes_dict):
             import pandas as pd
             import math
-            from pyecharts import options as opts
-            from pyecharts.charts import *
-            from pyecharts.globals import *
+            from pyecharts import #
             # do not set theme!!!
             # generate code to perform operations here
 
@@ -48,20 +46,20 @@ def ask_echart_block(data, req, llm):
             for future in concurrent.futures.as_completed(futures):
                 result, retries_used, all_prompt = future.result()
                 if result is not None:
-                    result_list.append(result)
+                    result_list.append([result, retries_used])
                     if len(result_list) >= config_data['ai']['wait']:
                         break
 
             if len(result_list) != 0:
-                for result in result_list:
-                    return result, retries_used, all_prompt
+                for item in result_list:
+                    return item[0], item[1], all_prompt, len(result_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1
                     print(tries, "##############")
                     continue
                 print("gen failed")
-                return None, retries_used, all_prompt
+                return None, retries_used, all_prompt, 0.0
 
 
 def get_ask_echart_file_prompt(req, tmp_file=False):
@@ -80,9 +78,7 @@ def get_ask_echart_file_prompt(req, tmp_file=False):
             def process_data(dataframes_dict):
                 import pandas as pd
                 import math
-                from pyecharts import options as opts
-                from pyecharts.charts import *
-                from pyecharts.globals import *
+                from pyecharts import #
                 # generate code to perform operations here
                 chart.render(file_path)
                 return file_path
@@ -108,14 +104,14 @@ def ask_echart_file(data, req, llm):
                 result, retries_used, all_prompt = future.result()
                 graph_path = parse_output.parse_output_html(result)
                 if graph_path is not None:
-                    result_list.append(graph_path)
+                    result_list.append([graph_path, retries_used])
                     print(graph_path, "\n*************************")
                     if len(result_list) >= config_data['ai']['wait']:
                         break
 
             if len(result_list) != 0:
-                for graph_path in result_list:
-                    return graph_path, retries_used, all_prompt, len(result_list)/req.concurrent
+                for item in result_list:
+                    return item[0], item[1], all_prompt, len(result_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1

@@ -37,14 +37,14 @@ def ask_pd(data, req, llm):
             for future in concurrent.futures.as_completed(futures):
                 result, retries_used, all_prompt = future.result()
                 if result is not None:
-                    clean_data_pd_list.append(result)
+                    clean_data_pd_list.append([result, retries_used])
                     print(result, "\n*************************")
                     if len(clean_data_pd_list) >= config_data['ai']['wait']:
                         break
 
             if len(clean_data_pd_list) != 0:
-                clean_data_pd = clean_data_pd_list[0]
-                return clean_data_pd, retries_used, all_prompt, len(clean_data_pd_list)/req.concurrent
+                for item in clean_data_pd_list:
+                    return item[0], item[1], all_prompt, len(clean_data_pd_list)/req.concurrent
             else:
                 if tries < config_data['ai']['tries']:
                     tries += 1

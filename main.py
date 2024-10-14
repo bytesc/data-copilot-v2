@@ -43,6 +43,11 @@ class AskRequest(BaseModel):
     retries: int
 
 
+class AskRequestSteps(BaseModel):
+    question: str
+    concurrent: list
+    retries: list
+
 @app.post("/ask/pd")
 async def ask_pd(request: AskRequest):
     dict_data = fetch_data()
@@ -156,6 +161,7 @@ async def ask_graph_2(request: AskRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/ask/echart-block")
 async def ask_echart_block(request: AskRequest):
     dict_data = fetch_data()
@@ -221,32 +227,41 @@ async def ask_echart_file(request: AskRequest):
 
 
 @app.post("/ask/echart-file-2")
-async def ask_echart_file_2(request: AskRequest):
+async def ask_echart_file_2(original_request: AskRequestSteps):
     dict_data = fetch_data()
-
+    request1 = AskRequest(
+        question=original_request.question,
+        concurrent=original_request.concurrent[0],
+        retries=original_request.retries[0],
+    )
+    request2 = AskRequest(
+        question=original_request.question,
+        concurrent=original_request.concurrent[1],
+        retries=original_request.retries[1],
+    )
     try:
-        result, _, _, _ = ask_ai_for_pd.ask_pd(dict_data, request, llm)
-        result, retries_used, all_prompt, success = ask_ai_for_echart.ask_echart_file(result, request, llm)
-        if result is None:
+        result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
+        result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file(result1, request2, llm)
+        if result2 is None:
             return {
                 "code": 504,
-                "retries_used": retries_used,
+                "retries_used": [retries_used1, retries_used2],
                 "msg": "gen failed",
                 "html": "",
                 "file": "",
-                "prompt": all_prompt,
-                "success": 0.0
+                "prompt": [all_prompt1, all_prompt2],
+                "success": [0.0, 0.0]
             }
-        with open(result, 'r', encoding='utf-8') as file:
+        with open(result2, 'r', encoding='utf-8') as file:
             html_content = file.read()
-        logging.info(request.question, result)
+        logging.info(request2.question, result2)
         return {
             "code": 200,
-            "retries_used": retries_used,
+            "retries_used": [retries_used1, retries_used2],
             "html": html_content,
-            "file": result,
-            "prompt": all_prompt,
-            "success": success
+            "file": result2,
+            "prompt": [all_prompt1, all_prompt2],
+            "success": [success1, success2]
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
