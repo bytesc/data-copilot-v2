@@ -13,6 +13,8 @@ from utils.manuel_mode import pandas_html
 from utils import path_tools
 from llm_access.LLM import get_llm
 
+import traceback
+
 import logging
 
 # 设置中文字体
@@ -241,7 +243,10 @@ async def ask_echart_file_2(original_request: AskRequestSteps):
     )
     try:
         result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
-        result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file(result1, request2, llm)
+        if result1 is not None:
+            result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file(result1, request2, llm)
+        else:
+            result2, retries_used2, all_prompt2, success2 = None, None, None, None
         if result2 is None:
             return {
                 "code": 504,
@@ -264,6 +269,7 @@ async def ask_echart_file_2(original_request: AskRequestSteps):
             "success": [success1, success2]
         }
     except Exception as e:
+        print(str(e)+traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/prompt/pd")

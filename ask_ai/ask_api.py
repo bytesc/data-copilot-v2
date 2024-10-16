@@ -5,6 +5,7 @@ from utils.output_parsing import parse_output
 import time
 import logging
 
+import traceback
 
 import pandas as pd
 pd.set_option('display.max_columns', None)
@@ -64,9 +65,9 @@ def ask(data, question, llm, assert_func, retries=0):
                 return result, retries_times-1, all_prompt
             except Exception as e:
                 wrong_code = "the code was executed: ```python\n" + ans_code + "\n```"
-                error_msg = "the code raise Exception:" + str(e) + """
+                error_msg = "the code raise Exception:" + type(e).__name__+str(e) + """
                     please regenerate all the complete code again based on the above information. """
-                print(f"An error occurred while executing the code: \n {e}")
+                print(f"An error occurred while executing the code: \n {type(e).__name__+str(e)}")
         else:
             error_msg = """code should only be in md code blocks: 
             ```python
