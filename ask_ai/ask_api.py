@@ -6,6 +6,10 @@ import time
 import logging
 
 
+import pandas as pd
+pd.set_option('display.max_columns', None)
+
+
 def get_final_prompt(data, question):
     def slice_dfs(df_dict, lines=5):
         top_five_dict = {}
