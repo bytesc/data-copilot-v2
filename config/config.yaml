@@ -4,6 +4,7 @@ mysql: mysql+pymysql://root:123456@127.0.0.1/world
 ai:
   tries: 1
   wait: 100
+  data_rows: 2
 
 llm:
   model_provider: qwen #qwen #openai

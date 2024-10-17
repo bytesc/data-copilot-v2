@@ -29,8 +29,8 @@ llm = get_llm()
 
 
 def fetch_data():
-    dict_data = data_access.read_db.get_data_from_db()
-    return dict_data
+    data, key, comment = data_access.read_db.get_data_from_db()
+    return [data, key, comment]
 
 print(fetch_data())
 
@@ -135,32 +135,47 @@ async def ask_graph(request: AskRequest):
 
 
 @app.post("/ask/graph-2")
-async def ask_graph_2(request: AskRequest):
+async def ask_graph_2(original_request: AskRequestSteps):
     dict_data = fetch_data()
+    request1 = AskRequest(
+        question=original_request.question,
+        concurrent=original_request.concurrent[0],
+        retries=original_request.retries[0],
+    )
+    request2 = AskRequest(
+        question=original_request.question,
+        concurrent=original_request.concurrent[1],
+        retries=original_request.retries[1],
+    )
     try:
-        result, _, _, _ = ask_ai_for_pd.ask_pd(dict_data, request, llm)
-        result, retries_used, all_prompt, success = ask_ai_for_graph.ask_graph(result, request, llm)
-        if result is None:
+
+        result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
+        if result1 is not None:
+            result2, retries_used2, all_prompt2, success2 = ask_ai_for_graph.ask_graph([result1], request2, llm)
+        else:
+            result2, retries_used2, all_prompt2, success2 = None, None, None, None
+        if result2 is None:
             return {
                 "code": 504,
-                "retries_used": retries_used,
+                "retries_used": [retries_used1, retries_used2],
                 "msg": "gen failed",
                 "image_data": "",
                 "file": "",
-                "prompt": all_prompt,
-                "success": 0.0
+                "prompt": [all_prompt1, all_prompt2],
+                "success": [0.0, 0.0]
             }
-        with open(result, "rb") as image_file:
+        with open(result2, "rb") as image_file:
             image_data = base64.b64encode(image_file.read())
         return {
             "code": 200,
-            "retries_used": retries_used,
+            "retries_used": [retries_used1, retries_used2],
             "image_data": image_data.decode('utf-8'),
-            "file": result,
-            "prompt": all_prompt,
-            "success": success
+            "file": result2,
+            "prompt": [all_prompt1, all_prompt2],
+            "success": [success1, success2]
         }
     except Exception as e:
+        print(str(e)+traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -195,6 +210,7 @@ async def ask_echart_block(request: AskRequest):
             "success": success
         }
     except Exception as e:
+        print(str(e)+traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -225,6 +241,7 @@ async def ask_echart_file(request: AskRequest):
             "success": success
         }
     except Exception as e:
+        print(str(e)+traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -244,7 +261,7 @@ async def ask_echart_file_2(original_request: AskRequestSteps):
     try:
         result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
         if result1 is not None:
-            result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file(result1, request2, llm)
+            result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file([result1], request2, llm)
         else:
             result2, retries_used2, all_prompt2, success2 = None, None, None, None
         if result2 is None:

@@ -1,29 +1,59 @@
 import pandas as pd
-from sqlalchemy import text
+from sqlalchemy import text, inspect
 
 from data_access.db_conn import engine
 
 tables_data = None
 
 
+def get_foreign_keys():
+    inspector = inspect(engine)
+    foreign_keys = {}
+    for table_name in inspector.get_table_names():
+        fks = inspector.get_foreign_keys(table_name)
+        if fks:
+            foreign_keys[table_name] = {}
+            for fk in fks:
+                for column in fk['constrained_columns']:
+                    foreign_keys[table_name][column] = (
+                        fk['referred_table'],
+                        fk['referred_columns'][0]
+                    )
+    return foreign_keys
+
+
+def get_table_and_column_comments():
+    inspector = inspect(engine)
+    table_comments = {}
+    column_comments = {}
+    table_names = inspector.get_table_names()
+    for table_name in table_names:
+        table_comment = inspector.get_table_comment(table_name)
+        table_comments[table_name] = table_comment['text']
+        columns = inspector.get_columns(table_name)
+        column_comments[table_name] = {}
+        for column in columns:
+            column_comments[table_name][column['name']] = column['comment']
+    return [table_comments, column_comments]
+
+
 def get_data_from_db():
     global tables_data
-    if tables_data is not None:
-        return tables_data
-    with engine.connect() as connection:
-        query = text("SHOW TABLES")
-        tables = connection.execute(query).fetchall()
+    if tables_data is None:
+        with engine.connect() as connection:
+            query = text("SHOW TABLES")
+            tables = connection.execute(query).fetchall()
 
-        # 准备一个字典来存储所有表的DataFrame
-        tables_data = {}
+            # 准备一个字典来存储所有表的DataFrame
+            tables_data = {}
 
-        # 遍历所有表名
-        for table_name in tables:
-            table_name = table_name[0]  # 表名是一个元组，取第一个元素
-            query = text(f"SELECT * FROM {table_name}")  # 构造查询语句
-            tables_data[table_name] = pd.read_sql(query, connection)  # 读取表内容到DataFrame
+            # 遍历所有表名
+            for table_name in tables:
+                table_name = table_name[0]  # 表名是一个元组，取第一个元素
+                query = text(f"SELECT * FROM {table_name}")  # 构造查询语句
+                tables_data[table_name] = pd.read_sql(query, connection)  # 读取表内容到DataFrame
 
-        connection.close()
+            connection.close()
 
     # 打印每个表的内容
     # for table_name, table_df in tables_data.items():
@@ -61,19 +91,18 @@ def get_data_from_db():
     #         merged_tables_data[table_name] = table_df
 
     # return tables_data, merged_tables_data
-    return tables_data
+    keys = get_foreign_keys()
+    comments = get_table_and_column_comments()
+    return tables_data, keys, comments
 
 
 if __name__ == "__main__":
-    data, mdata = get_data_from_db()
-    print(type(data),type(mdata), "\n")
-    for table_name, table_df in data.items():
-        print(f"Table: {table_name}")
-        print(table_df)
-        print(type(table_df))
+    data = get_data_from_db()
+    print(type(data), "\n")
+    print(data[2][1])
     print("###########################################\n\n")
-    for table_name, table_df in mdata.items():
-        print(f"Table: {table_name}")
-        print(table_df)
-        print(type(table_df))
+    # for table_name, table_df in mdata.items():
+    #     print(f"Table: {table_name}")
+    #     print(table_df)
+    #     print(type(table_df))
 

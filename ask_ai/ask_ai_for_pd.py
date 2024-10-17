@@ -12,8 +12,8 @@ def get_ask_pd_prompt(req):
     example_code = """ 
        the Python function should return a single pandas dataframe only!!! 
        do not draw any graph at this step, even if the question asked. do not save any thing. 
-       use `pd.merge(df,df,left_on='x',right_on='y')` to join tables as different tables may have different col names.
-       you should join the tables and select cols based on the questions meaning
+       you should join the tables and select cols based on the questions meaning.
+       columns bound may have different columns names.
        here is an example: 
        ```python
        def process_data(dataframes_dict):
