@@ -151,7 +151,8 @@ async def ask_graph_2(original_request: AskRequestSteps):
 
         result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
         if result1 is not None:
-            result2, retries_used2, all_prompt2, success2 = ask_ai_for_graph.ask_graph([result1], request2, llm)
+            result2, retries_used2, all_prompt2, success2 = ask_ai_for_graph.ask_graph([{"data": result1}]
+                                                                                       , request2, llm)
         else:
             result2, retries_used2, all_prompt2, success2 = None, None, None, None
         if result2 is None:
@@ -261,7 +262,8 @@ async def ask_echart_file_2(original_request: AskRequestSteps):
     try:
         result1, retries_used1, all_prompt1, success1 = ask_ai_for_pd.ask_pd(dict_data, request1, llm)
         if result1 is not None:
-            result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file([result1], request2, llm)
+            result2, retries_used2, all_prompt2, success2 = ask_ai_for_echart.ask_echart_file([{"data": result1}],
+                                                                                              request2, llm)
         else:
             result2, retries_used2, all_prompt2, success2 = None, None, None, None
         if result2 is None:
