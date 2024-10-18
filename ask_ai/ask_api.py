@@ -85,7 +85,7 @@ def ask(data, question, llm, assert_func, retries=0):
                 wrong_code = "the code was executed: ```python\n" + ans_code + "\n```"
                 error_msg = "the code raise Exception:" + type(e).__name__+': '+str(e) + """
                     please regenerate all the complete code again based on the above information. """
-                if type(e).__name__ == "KeyError":
+                if type(e).__name__ == "KeyError" and len(data) > 1:
                     error_msg = error_msg + "\n connections:" + str(data[1])
                 print(f"An error occurred while executing the code: \n {type(e).__name__+': '+str(e)}")
         else:
