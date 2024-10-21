@@ -30,7 +30,8 @@ def get_final_prompt(data, question):
     Here is the dataframe dict sample(it is just data structure samples not real data): 
     """
 
-    key_prompt = """
+    key_prompt = """ 
+    the tables may be connected through columns with different names, they are defined by Key Constraints.
     Here is Key Constraints of the tables:
     (format: {'table_name': {'table_name.columns': 'referred_table.referred_columns'}})
     """
