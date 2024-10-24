@@ -143,7 +143,8 @@ async def ask_graph_2(original_request: AskRequestSteps):
         retries=original_request.retries[0],
     )
     request2 = AskRequest(
-        question=original_request.question,
+        question="""data in the given df is already filtered, 
+        you just need to draw a suitable kind of graph based on the data.""",
         concurrent=original_request.concurrent[1],
         retries=original_request.retries[1],
     )
@@ -255,7 +256,8 @@ async def ask_echart_file_2(original_request: AskRequestSteps):
         retries=original_request.retries[0],
     )
     request2 = AskRequest(
-        question=original_request.question,
+        question="""data in the given df is already filtered, 
+        you just need to draw a suitable kind of graph based on the data.""",
         concurrent=original_request.concurrent[1],
         retries=original_request.retries[1],
     )
