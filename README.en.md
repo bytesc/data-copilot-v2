@@ -157,7 +157,7 @@ The current v2 version only provides an API and does not have a graphical interf
 python ask_test.py
 ```
 
-The generated charts will be saved to `./temp.html` or `./temp.png`.
+The generated charts will be saved to `.temp.html` or `.temp.png`.
 
 ### Potential Future Directions
 

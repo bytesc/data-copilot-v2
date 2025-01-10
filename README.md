@@ -149,7 +149,7 @@ python main.py
 python ask_test.py
 ```
 
-生成的图表会保存到 `./temp.html` 或  `./temp.png`
+生成的图表会保存到 `.temp.html` 或  `.temp.png`
 
 ### 未来可能的方向
 

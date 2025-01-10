@@ -9,3 +9,6 @@ cache/
 exports/
 tmp_imgs/*.png
 tmp_imgs/*.html
+
+temp.png
+temp.html
