@@ -157,6 +157,8 @@ The current v2 version only provides an API and does not have a graphical interf
 python ask_test.py
 ```
 
+![](./readme_img/demo.png)
+
 The generated charts will be saved to `.temp.html` or `.temp.png`.
 
 ### Potential Future Directions
