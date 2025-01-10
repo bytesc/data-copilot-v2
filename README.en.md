@@ -151,7 +151,13 @@ python main.py
 
 By default, you can access it via the browser at [http://127.0.0.1:8087/](http://127.0.0.1:8087/).
 
+The current v2 version only provides an API and does not have a graphical interface. You can run `ask_test.py` for testing.
 
+```bash
+python ask_test.py
+```
+
+The generated charts will be saved to `./temp.html` or `./temp.png`.
 
 ### Potential Future Directions
 

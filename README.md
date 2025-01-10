@@ -143,7 +143,13 @@ main.py 是项目入口，运行此文件即可启动服务器
 python main.py
 ```
 
+目前 v2 版本仅提供 api，暂时没有图形界面。可用运行 `ask_test.py` 进行测试。
 
+```bash
+python ask_test.py
+```
+
+生成的图表会保存到 `./temp.html` 或  `./temp.png`
 
 ### 未来可能的方向
 
