@@ -1,6 +1,6 @@
 # data-copilot
 
-✨ **Natural Language Database Query System (RAG) based on langchain and Large Language Models (LLM)**
+✨ **Natural Language Database Query System (RAG) based on langchain and Large Language Models (LLM) and Concurrent Prediction Models**
 
 Utilizing natural language queries, this system intelligently parses database structures using large language models, enabling intelligent multi-table structured queries and statistical computations on data. It also smartly generates various charts based on query results. Implemented with Pywebio interactive frontend web pages, without the need for OpenAI API, it's 100% pure Python code.
 
