@@ -16,7 +16,7 @@
 ### 本项目相关仓库
 - [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2)
 
-[个人网站：www.bytesc.top](http://www.bytesc.top) 
+🚩[个人网站：www.bytesc.top](http://www.bytesc.top) 
 
 🔔 如有项目相关问题，欢迎在本项目提出`issue`，我一般会在 24 小时内回复。
 
