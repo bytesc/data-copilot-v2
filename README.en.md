@@ -46,6 +46,11 @@ Utilizing natural language queries, this system intelligently parses database st
 - ✨ Utilize BERT (Bidirectional Encoder Representations from Transformers) to **vectorize** the question text and prompt, and then apply linear regression, logistic regression, neural networks (nn), and Transformer models for **regression**. **Predict** the appropriate concurrency levels and retry counts based on the question text, and compare the effectiveness of different models.
 
 
+## Demo
+
+![](./readme_img/img_demo.png)
+![](./readme_img/img_demo2.png)
+
 ## Basic Technical Principles
 
 

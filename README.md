@@ -42,6 +42,10 @@
 
 - ✨ 使用 BERT(Bidirectional Encoder Representation from Transformers) 将提问文本和 prompt **向量化**，再使用线性回归, Logistic 回归, nn, Transformer 多种模型进行**回归**，根据提问文本**预测**合适的并发数量和重试次数，对比不同模型的效果，
 
+## 演示截图
+
+![](./readme_img/img_demo.png)
+![](./readme_img/img_demo2.png)
 
 ## 基本技术原理
 
