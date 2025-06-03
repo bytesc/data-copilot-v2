@@ -15,7 +15,7 @@
 
 
 ### 本项目相关仓库
-- [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2)
+- [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 🚩[个人网站：www.bytesc.top](http://www.bytesc.top) 
 
@@ -153,7 +153,7 @@ main.py 是项目入口，运行此文件即可启动服务器
 python main.py
 ```
 
-目前 v2 版本仅提供 api，暂时没有图形界面。可用运行 `ask_test.py` 进行测试。
+本仓库为后端 api。可用运行 `ask_test.py` 进行测试。
 
 ```bash
 python ask_test.py
@@ -162,6 +162,12 @@ python ask_test.py
 ![](./readme_img/demo.png)
 
 生成的图表会保存到 `.temp.html` 或  `.temp.png`
+
+并发预测模型训练部署，基于 pywebio 的图形界面可见：
+
+- [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+
+![](./readme_img/img_demo.png)
 
 ### 未来可能的方向
 

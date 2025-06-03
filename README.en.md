@@ -10,8 +10,12 @@ Utilizing natural language queries, this system intelligently parses database st
 ### Related Projects
 - [Interpretable Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
 - [Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
+- [Large Language Model (LLM) Agent based on Code Generation and Function Calls](https://github.com/bytesc/data-copilot-functions)
+- [Large Language Model (LLM) Agent based on Code Generation, realizing a WeChat Mini Program for Autonomous Class Management](https://github.com/bytesc/smart-class-back)
+
+
 ### Repositories Related to This Project
-- [RAG Server Side https://github.com/bytesc/data-copilot-v2](https://github.com/bytesc/data-copilot-v2)
+- [RAG Server Side https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 
 [Personal website: www.bytesc.top](http://www.bytesc.top)
@@ -157,9 +161,7 @@ save the API key to `llm_access/api_key_openai.txt`.
 python main.py
 ```
 
-By default, you can access it via the browser at [http://127.0.0.1:8087/](http://127.0.0.1:8087/).
-
-The current v2 version only provides an API and does not have a graphical interface. You can run `ask_test.py` for testing.
+This repository contains the backend API. You can run `ask_test.py` for testing.
 
 ```bash
 python ask_test.py
@@ -168,6 +170,11 @@ python ask_test.py
 ![](./readme_img/demo.png)
 
 The generated charts will be saved to `.temp.html` or `.temp.png`.
+
+Concurrent prediction model training and deployment, with a graphical interface based on PyWebIO:
+- [Concurrent prediction model training https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+
+![](./readme_img/img_demo.png)
 
 ### Potential Future Directions
 
