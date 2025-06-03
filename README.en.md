@@ -8,15 +8,20 @@ Utilizing natural language queries, this system intelligently parses database st
 
 [📺demo_video ./demo_video.mp4](./demo_video.mp4)
 
+
+### Repositories Related to This Project
+This project consists of two repositories. This repository is for the Agent service.
+
+The following repository is for concurrent prediction model training and the graphical user interface:
+
+- [Concurrent prediction model training and graphical interface https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+
+
 ### Related Projects
 - [Interpretable Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
 - [Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
 - [Large Language Model (LLM) Agent based on Code Generation and Function Calls](https://github.com/bytesc/data-copilot-functions)
 - [Large Language Model (LLM) Agent based on Code Generation, realizing a WeChat Mini Program for Autonomous Class Management](https://github.com/bytesc/smart-class-back)
-
-
-### Repositories Related to This Project
-- [RAG Server Side https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 
 [Personal website: www.bytesc.top](http://www.bytesc.top)
@@ -178,7 +183,7 @@ python ask_test.py
 The generated charts will be saved to `.temp.html` or `.temp.png`.
 
 Concurrent prediction model training and deployment, with a graphical interface based on PyWebIO:
-- [Concurrent prediction model training https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+- [Concurrent prediction model training and graphical interface https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 ![](./readme_img/img_demo.png)
 

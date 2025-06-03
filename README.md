@@ -9,15 +9,20 @@
 
 [📺演示视频 ./demo_video.mp4](./demo_video.mp4)
 
+### 本项目相关仓库
+本项目包含两个仓库，本仓库为智能体（Agent）服务。
+
+以下仓库是并发预测模型训练和图形界面：
+
+- [并发预测模型训练和图形界面 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+
+
 ### 相关项目
 - [基于大语言模型 (LLM) 的<u>**可解释型**</u>自然语言数据库查询系统 (RAG) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
 - [基于大语言模型 (LLM) 的自然语言数据库查询系统 (RAG) (https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
 - [基于代码生成和函数调用(function call)的大语言模型(LLM)智能体 https://github.com/bytesc/data-copilot-functions](https://github.com/bytesc/data-copilot-functions)
 - [基于代码生成的大语言模型 (LLM) 智能体，实现班级自主管理小程序 https://github.com/bytesc/smart-class-back](https://github.com/bytesc/smart-class-back)
 
-
-### 本项目相关仓库
-- [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 🚩[个人网站：www.bytesc.top](http://www.bytesc.top) 
 
@@ -171,7 +176,7 @@ python ask_test.py
 
 并发预测模型训练部署，基于 pywebio 的图形界面可见：
 
-- [并发预测模型训练 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
+- [并发预测模型训练和图形界面 https://github.com/bytesc/data-copilot-v2-controller](https://github.com/bytesc/data-copilot-v2-controller)
 
 ![](./readme_img/img_demo.png)
 
