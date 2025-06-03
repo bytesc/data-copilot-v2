@@ -18,8 +18,8 @@ The following repository is for concurrent prediction model training and the gra
 
 
 ### Related Projects
-- [Interpretable Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
-- [Natural Language Database Query System (RAG) based on Large Language Models (LLM) https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
+- [Interpretable Natural Language Database Query System based on Large Language Models (LLM) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
+- [Natural Language Database Query System based on Large Language Models (LLM) https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
 - [Large Language Model (LLM) Agent based on Code Generation and Function Calls](https://github.com/bytesc/data-copilot-functions)
 - [Large Language Model (LLM) Agent based on Code Generation, realizing a WeChat Mini Program for Autonomous Class Management](https://github.com/bytesc/smart-class-back)
 

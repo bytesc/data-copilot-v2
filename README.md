@@ -18,8 +18,8 @@
 
 
 ### 相关项目
-- [基于大语言模型 (LLM) 的<u>**可解释型**</u>自然语言数据库查询系统 (RAG) https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
-- [基于大语言模型 (LLM) 的自然语言数据库查询系统 (RAG) (https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
+- [基于大语言模型 (LLM) 的<u>**可解释型**</u>自然语言数据库查询系统 https://github.com/bytesc/data-copilot-steps](https://github.com/bytesc/data-copilot-steps)
+- [基于大语言模型 (LLM) 的自然语言数据库查询系统 (https://github.com/bytesc/data-copilot](https://github.com/bytesc/data-copilot)
 - [基于代码生成和函数调用(function call)的大语言模型(LLM)智能体 https://github.com/bytesc/data-copilot-functions](https://github.com/bytesc/data-copilot-functions)
 - [基于代码生成的大语言模型 (LLM) 智能体，实现班级自主管理小程序 https://github.com/bytesc/smart-class-back](https://github.com/bytesc/smart-class-back)
 
