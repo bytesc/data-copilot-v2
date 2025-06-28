@@ -9,6 +9,8 @@
 
 [📺演示视频 ./demo_video.mp4](./demo_video.mp4)
 
+[📝相关论文 https://github.com/bytesc/data-copilot-v2-controller/blob/master/paper.pdf](https://github.com/bytesc/data-copilot-v2-controller/blob/master/paper.pdf)
+
 ### 本项目相关仓库
 本项目包含两个仓库，本仓库为智能体（Agent）服务。
 

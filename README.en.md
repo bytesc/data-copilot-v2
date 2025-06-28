@@ -8,6 +8,7 @@ Utilizing natural language queries, this system intelligently parses database st
 
 [📺demo_video ./demo_video.mp4](./demo_video.mp4)
 
+[📝Related Paper https://github.com/bytesc/data-copilot-v2-controller/blob/master/paper.pdf](https://github.com/bytesc/data-copilot-v2-controller/blob/master/paper.pdf)
 
 ### Repositories Related to This Project
 This project consists of two repositories. This repository is for the Agent service.
